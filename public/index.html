@@ -2,12 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>V WASM Test</title>
+		<title>V WASM Playground</title>
 		<meta name="viewport" content="width=device-width">
 		<script type="module">
-			import {CodeJar} from "https://cdn.pika.dev/codejar@2.0.0"
-			import Prism from "https://cdn.pika.dev/prismjs@1.20.0"
-			import "./index.js"
+			import {CodeJar} from "https://jspm.dev/codejar@3.1.0"
+			import Prism from "https://jspm.dev/prismjs@1.21.0"
+			import "./main.js"
 			
 			let v = {}
 			
@@ -18,9 +18,8 @@
 					/\/\*[^]*?(?:\*\/|$)/,
 					/\/\/.*/,
 				],
-				// TODO: Uncomment the following line once Firefox supports lookbehinds in regexes.
-				// "leading-space": /(?<=\n[\t ]*|^) /,
-				"trailing-space": / (?=\s*?\r?\n)/,
+				"leading-space": {pattern: /((?:\n|^)[\t ]*?) /, lookbehind: true},
+				"trailing-space": / (?=\s*?\r?(?:\n|$))/,
 				string:
 				[
 					/r(["']).*?\1/,
@@ -57,17 +56,14 @@
 				],
 				tab: /\t/,
 				prefix: /\bJS\b/,
-				type:
-				{
-					pattern: /\b(?:bool|string|i8|i16|int|i64|i128|byte|u16|u32|u64|u128|rune|f32|f64|byteptr|voidptr|any|[A-Z][A-Za-z]*)\b/,
-					lookbehind: true,
-				},
+				type: /\b(?:bool|string|i8|i16|int|i64|i128|byte|u16|u32|u64|u128|rune|f32|f64|byteptr|voidptr|any|[A-Z][A-Za-z]*)\b/,
 				keyword: /\b(?:break|const|continue|defer|else|enum|fn|for|go|goto|if|import|in|interface|match|module|none|or|pub|return|struct|type|mut)\b/,
 				boolean: /\b(?:true|false)\b/,
 				function: /\w+(?=\s*\()/,
+				range: {pattern: /\.\./, inside: {operator: /[^]*/}},
 				number: /(?:\b|\.)[0-9](?:[0-9a-z]|\.(?!\.))*/i,
 				variable: /\w+/,
-				operator: /[\+\-\*\/\%\&\|\^\<\>\=\!\:\?]+/,
+				operator: /[\+\-\*\/\%\&\|\^\<\>\=\!\:\?\.]+/,
 				punctuation: /[^a-z0-9\s]+/i,
 			}
 			
@@ -161,14 +157,15 @@
 				<li><a href="/">Hello, world!</a></li>
 				<li><a href="/?url:examples/fibonacci.v">Fibonacci</a></li>
 				<li><a href="/?url:examples/game-of-life.v">Game of Life</a></li>
+				<li><a href="/?url:examples/interpolation.v">String interpolation</a></li>
 			</ul>
 		</details>
 		<pre id="editor" class="language-v">Loading...</pre>
 		<p>
-			<button id="play">play</button>
+			<button id="play" disabled>play</button>
 			<button id="stop" disabled>stop</button>
 		</p>
 		<pre id="output"></pre>
-		<p>made by Zambonifofex〜 (<a href="https://github.com/Zambonifofex/v-wasm">repository on GitHub</a>)</p>
+		<p>made by Zamfofex〜 (<a href="https://github.com/zamfofex/v-wasm">repository on GitHub</a>)</p>
 	</body>
 </html>

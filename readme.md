@@ -1,16 +1,20 @@
 ~~~ Bash
-git clone --recurse-submodules https://github.com/Zambonifofex/v-wasm
+git clone https://github.com/zamfofex/v-wasm
 cd v-wasm
-# Needs Emscripten and V pre‐installed.
-./build.bash
+git submodule update --init --remote v
+# Needs V, Clang, and WASI sysroot pre‐installed.
+# (Replace the ‘/wasi-sysroot’ path appropriately.)
+wasi_sysroot=/wasi-sysroot ./build.bash
 cd public
 python3 -m http.server
 ~~~
 
+Note: Your V version roughly needs to match the version of the `v` submodule. In the instructions above, I update the submodule to latest, but you can feel free to do something else.
+
 license — zero‐clause BSD (0BSD)
 ---
 
-Copyright © 2020 by Pedro M. Zamboni “Zambonifofex”
+Copyright © 2020 by Zamfofex
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
 

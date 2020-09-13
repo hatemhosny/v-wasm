@@ -4,12 +4,14 @@ set -e
 
 v v/cmd/v -o v.c
 
-emcc -std=gnu11 -w -D__linux__ \
-	placeholders.c v.c \
-	-lm \
-	-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["callMain"]' \
-	-s INVOKE_RUN=0 \
-	--post-js index.js \
-	--preload-file v/vlib@vlib \
-	-o public/index.js \
-	-O2
+tar cf public/vlib.tar -C v vlib/builtin
+
+clang -w -O3 -D__linux__ \
+	-target wasm32-unknown-wasi \
+	--sysroot "$wasi_sysroot" \
+	-D_WASI_EMULATED_SIGNAL \
+	-lwasi-emulated-signal \
+	-Iinclude \
+	-Wl,--allow-undefined \
+	-o public/v.wasm \
+	v.c placeholders.c
